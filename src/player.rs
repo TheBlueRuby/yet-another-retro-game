@@ -12,51 +12,54 @@ impl Player {
     pub fn new(
         x: i32,
         y: i32,
-        mv_x: i32,
-        mv_y: i32,
-        sp_x: i32,
-        sp_y: i32,
+        mv_x: f32,
+        mv_y: f32,
+        sp_x: f32,
+        sp_y: f32,
         texture: raylib::texture::Image,
     ) -> Self {
         Self {
-            transform: Entity::new(x, y, 0, 0, mv_x, mv_y, sp_x, sp_y),
+            transform: Entity::new(x, y, 0.0, 0.0, mv_x, mv_y, sp_x, sp_y),
             texture,
         }
     }
 
     pub fn handle_input(&mut self, rl: &raylib::RaylibHandle) {
-        if rl.is_key_down(KEY_W) && self.transform.vel_y >= -self.transform.mv_y {
+        /* ---------------------------------- input --------------------------------- */
+        if rl.is_key_down(KEY_W) && (self.transform.vel_y >= -self.transform.mv_y) {
             self.transform.vel_y -= self.transform.sp_y;
         }
 
-        if rl.is_key_down(KEY_A) && self.transform.vel_x >= -self.transform.mv_x {
+        if rl.is_key_down(KEY_A) && (self.transform.vel_x >= -self.transform.mv_x) {
             self.transform.vel_x -= self.transform.sp_x;
         }
 
-        if rl.is_key_down(KEY_S) && self.transform.vel_y <= self.transform.mv_y {
+        if rl.is_key_down(KEY_S) && (self.transform.vel_y <= self.transform.mv_y) {
             self.transform.vel_y += self.transform.sp_y;
         }
 
-        if rl.is_key_down(KEY_D) && self.transform.vel_x <= self.transform.mv_x {
+        if rl.is_key_down(KEY_D) && (self.transform.vel_x <= self.transform.mv_x) {
             self.transform.vel_x += self.transform.sp_x;
         }
-
-        if self.transform.vel_x < 0 {
-            self.transform.vel_x += 2;
+        
+        /* -------------------------------- friction -------------------------------- */
+        if self.transform.vel_x < 0.0 {
+            self.transform.vel_x += 0.5;
         }
-        if self.transform.vel_x > 0 {
-            self.transform.vel_x -= 2;
-        }
-
-        if self.transform.vel_y < 0 {
-            self.transform.vel_y += 2;
-        }
-        if self.transform.vel_y > 0 {
-            self.transform.vel_y -= 2;
+        if self.transform.vel_x > 0.0 {
+            self.transform.vel_x -= 0.5;
         }
 
-        self.transform.x += self.transform.vel_x;
-        self.transform.y += self.transform.vel_y;
+        if self.transform.vel_y < 0.0 {
+            self.transform.vel_y += 0.5;
+        }
+        if self.transform.vel_y > 0.0 {
+            self.transform.vel_y -= 0.5;
+        }
+
+        /* ----------------------------- updating player ---------------------------- */
+        self.transform.x += self.transform.vel_x as i32;
+        self.transform.y += self.transform.vel_y as i32;
     }
 
     pub fn draw(

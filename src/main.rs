@@ -10,8 +10,8 @@ fn main() {
     /* -------------------------------------------------------------------------- */
 
     /* ------------------------------- raylib init ------------------------------ */
-    let screen_width = 1920;
-    let screen_height = 1080;
+    let screen_width = 1280;
+    let screen_height = 720;
 
     let virt_screen_width = 320;
     let virt_screen_height = 180;
@@ -56,7 +56,7 @@ fn main() {
     );
 
     /* -------------------------------- game init ------------------------------- */
-    let mut player: Player = Player::new(0, 0, 8, 8, 4, 4, Image::load_image("resources/player.png").unwrap());
+    let mut player: Player = Player::new(0, 0, 3.0, 3.0, 1.0, 1.0, Image::load_image("resources/player.png").unwrap());
     let player_tex = rl.load_texture_from_image(&thread, &player.texture).unwrap();
 
     /* -------------------------------------------------------------------------- */
