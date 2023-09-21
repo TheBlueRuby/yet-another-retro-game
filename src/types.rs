@@ -1,28 +1,43 @@
-use raylib::prelude::Vector2;
+use raylib::prelude::{Rectangle, Vector2};
 
-#[derive(Debug, Clone, Copy)]
-pub struct Entity {
+#[derive(Default, Debug, Clone, Copy)]
+pub struct Hitbox {
+    pub offset: Vector2,
+    pub rect: Rectangle,
+}
+
+impl Hitbox {
+    pub fn new(offset: Vector2, rect: Rectangle) -> Self {
+        Self { offset, rect }
+    }
+}
+
+#[derive(Default, Debug, Clone, Copy)]
+pub struct Transform {
     pub x: i32,
     pub y: i32,
     pub vel: Vector2,
-    pub mv: Vector2,
-    pub sp: Vector2
+    pub max_vel: Vector2,
+    pub mvmt_spd: Vector2,
+    pub hitbox: Hitbox,
 }
 
-impl Entity {
+impl Transform {
     pub fn new(
         x: i32,
         y: i32,
         vel: Vector2,
-        mv: Vector2,
-        sp: Vector2,
+        max_vel: Vector2,
+        mvmt_spd: Vector2,
+        hitbox: Hitbox,
     ) -> Self {
-        Entity {
+        Self {
             x,
             y,
             vel,
-            mv,
-            sp,
+            max_vel,
+            mvmt_spd,
+            hitbox,
         }
     }
 }

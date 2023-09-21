@@ -3,11 +3,13 @@ use raylib::prelude::*;
 mod player;
 mod types;
 use player::*;
+use types::Hitbox;
 
 fn main() {
     /* -------------------------------------------------------------------------- */
     /*                                    init                                    */
     /* -------------------------------------------------------------------------- */
+    let debug = cfg!(debug_assertions);
 
     /* ------------------------------- raylib init ------------------------------ */
     let screen_width = 1280;
@@ -56,8 +58,17 @@ fn main() {
     );
 
     /* -------------------------------- game init ------------------------------- */
-    let mut player: Player = Player::new(0, 0, Vector2::new(3.0, 3.0), Vector2::new(1.0, 1.0), Image::load_image("resources/player.png").unwrap());
-    let player_tex = rl.load_texture_from_image(&thread, &player.texture).unwrap();
+    let mut player: Player = Player::new(
+        0,
+        0,
+        Vector2::new(3.0, 3.0),
+        Vector2::new(1.0, 1.0),
+        Hitbox::new(Vector2::new(2.0, 0.0), Rectangle::new(0.0, 0.0, 13.0, 16.0)),
+        Image::load_image("resources/player.png").unwrap(),
+    );
+    let player_tex = rl
+        .load_texture_from_image(&thread, &player.texture)
+        .unwrap();
 
     /* -------------------------------------------------------------------------- */
     /*                                  main loop                                 */
@@ -75,6 +86,9 @@ fn main() {
         screen_camera.target.y -= world_camera.target.y;
         screen_camera.target.y *= virt_ratio;
 
+        /* --------------------------------- physics -------------------------------- */
+        player.check_grounded();
+
         /* --------------------------------- drawing -------------------------------- */
         let mut draw_handle = rl.begin_drawing(&thread);
 
@@ -82,7 +96,7 @@ fn main() {
         let mut w_mode_2d = texture_mode.begin_mode2D(world_camera);
         w_mode_2d.clear_background(Color::WHITE);
         drop(w_mode_2d);
-        player.draw(&mut texture_mode, &player_tex);
+        player.draw(&mut texture_mode, &player_tex, debug);
 
         drop(texture_mode);
 
