@@ -56,7 +56,7 @@ fn main() {
     );
 
     /* -------------------------------- game init ------------------------------- */
-    let mut player: Player = Player::new(0, 0, 3.0, 3.0, 1.0, 1.0, Image::load_image("resources/player.png").unwrap());
+    let mut player: Player = Player::new(0, 0, Vector2::new(3.0, 3.0), Vector2::new(1.0, 1.0), Image::load_image("resources/player.png").unwrap());
     let player_tex = rl.load_texture_from_image(&thread, &player.texture).unwrap();
 
     /* -------------------------------------------------------------------------- */

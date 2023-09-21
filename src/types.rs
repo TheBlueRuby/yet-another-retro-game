@@ -1,35 +1,28 @@
+use raylib::prelude::Vector2;
+
 #[derive(Debug, Clone, Copy)]
 pub struct Entity {
-    pub(crate) x: i32,
-    pub(crate) y: i32,
-    pub(crate) vel_x: f32,
-    pub(crate) vel_y: f32,
-    pub(crate) mv_x: f32,
-    pub(crate) mv_y: f32,
-    pub(crate) sp_x: f32,
-    pub(crate) sp_y: f32,
+    pub x: i32,
+    pub y: i32,
+    pub vel: Vector2,
+    pub mv: Vector2,
+    pub sp: Vector2
 }
 
 impl Entity {
     pub fn new(
         x: i32,
         y: i32,
-        vel_x: f32,
-        vel_y: f32,
-        mv_x: f32,
-        mv_y: f32,
-        sp_x: f32,
-        sp_y: f32,
+        vel: Vector2,
+        mv: Vector2,
+        sp: Vector2,
     ) -> Self {
         Entity {
             x,
             y,
-            vel_x,
-            vel_y,
-            mv_x,
-            mv_y,
-            sp_x,
-            sp_y,
+            vel,
+            mv,
+            sp,
         }
     }
 }
