@@ -64,7 +64,7 @@ fn main() {
         Vector2::new(3.0, 3.0),
         Vector2::new(1.0, 1.0),
         Hitbox::new(Vector2::new(2.0, 0.0), Rectangle::new(0.0, 0.0, 13.0, 16.0)),
-        Image::load_image("resources/player.png").unwrap(),
+        Image::load_image("resources/images/player.png").unwrap(),
     );
     let player_tex = rl
         .load_texture_from_image(&thread, &player.texture)
