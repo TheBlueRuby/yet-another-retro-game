@@ -1,7 +1,9 @@
+use level::{load_level, load_tileset};
 use raylib::prelude::*;
 
 mod player;
 mod types;
+mod level;
 use player::*;
 use types::Hitbox;
 
@@ -59,9 +61,9 @@ fn main() {
 
     /* -------------------------------- game init ------------------------------- */
     let mut player: Player = Player::new(
-        0,
-        0,
-        Vector2::new(3.0, 3.0),
+        16,
+        16,
+        Vector2::new(3.0, 5.0),
         Vector2::new(1.0, 1.0),
         Hitbox::new(Vector2::new(2.0, 0.0), Rectangle::new(0.0, 0.0, 13.0, 16.0)),
         Image::load_image("resources/images/player.png").unwrap(),
@@ -69,6 +71,10 @@ fn main() {
     let player_tex = rl
         .load_texture_from_image(&thread, &player.texture)
         .unwrap();
+
+    let level = load_level("resources/levels/test.tmx");
+    let tileset = load_tileset("resources/levels/blackandwhite.tsx");
+    let tileset_tex = rl.load_texture(&thread, tileset.image.clone().unwrap().source.to_str().unwrap()).unwrap();
 
     /* -------------------------------------------------------------------------- */
     /*                                  main loop                                 */
@@ -87,7 +93,7 @@ fn main() {
         screen_camera.target.y *= virt_ratio;
 
         /* --------------------------------- physics -------------------------------- */
-        player.check_grounded();
+        player.check_grounded(&level);
 
         /* --------------------------------- drawing -------------------------------- */
         let mut draw_handle = rl.begin_drawing(&thread);
@@ -96,6 +102,8 @@ fn main() {
         let mut w_mode_2d = texture_mode.begin_mode2D(world_camera);
         w_mode_2d.clear_background(Color::WHITE);
         drop(w_mode_2d);
+
+        level::draw_tiles( &mut texture_mode, &level, &tileset_tex);
         player.draw(&mut texture_mode, &player_tex, debug);
 
         drop(texture_mode);
