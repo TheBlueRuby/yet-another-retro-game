@@ -73,7 +73,7 @@ fn main() {
         .unwrap();
 
     let level = load_level("resources/levels/test.tmx");
-    let tileset = load_tileset("resources/levels/blackandwhite.tsx");
+    let tileset = load_tileset("resources/levels/monochrome.tsx");
     let tileset_tex = rl.load_texture(&thread, tileset.image.clone().unwrap().source.to_str().unwrap()).unwrap();
 
     /* -------------------------------------------------------------------------- */
