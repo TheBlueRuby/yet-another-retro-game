@@ -7,13 +7,25 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="084a83da-8b72-492c-98f3-ded1164da3df" name="Changes" comment="" />
+    <list default="true" id="084a83da-8b72-492c-98f3-ded1164da3df" name="Changes" comment="renaming and split init logic into seperate func">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/levels/monochrome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/levels/monochrome.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/levels/test.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/levels/test.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/level.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/level.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/player.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/player.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="rustrover-config" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
@@ -24,6 +36,12 @@
   }
 }</component>
   <component name="GithubPullRequestsUISettings">
+    <option name="recentNewPullRequestHead">
+      <RepoCoordinatesHolder>
+        <option name="owner" value="TheBlueRuby" />
+        <option name="repository" value="yet-another-retro-game" />
+      </RepoCoordinatesHolder>
+    </option>
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
         <option name="accountId" value="2c3a191d-4439-4306-8afe-4d0ca897cc38" />
@@ -57,7 +75,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;formatting&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/nyehom/Programming/rust/yarg/Cargo.toml&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
@@ -162,6 +180,7 @@
       <workItem from="1695364828136" duration="107000" />
       <workItem from="1695364949380" duration="232000" />
       <workItem from="1695365193790" duration="169000" />
+      <workItem from="1695371694586" duration="425000" />
     </task>
     <task id="LOCAL-00001" summary="renamed &quot;blackandwhite.tsx&quot; to &quot;monochrome.tsx&quot;">
       <option name="closed" value="true" />
@@ -179,7 +198,23 @@
       <option name="project" value="LOCAL" />
       <updated>1695365059679</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="renaming and split init logic into seperate func">
+      <option name="closed" value="true" />
+      <created>1695370056274</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1695370056274</updated>
+    </task>
+    <task id="LOCAL-00004" summary="renaming and split init logic into seperate func">
+      <option name="closed" value="true" />
+      <created>1695370091284</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695370091284</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,7 +234,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="renamed &quot;blackandwhite.tsx&quot; to &quot;monochrome.tsx&quot;" />
     <MESSAGE value="added rustrover (intellij) config" />
-    <option name="LAST_COMMIT_MESSAGE" value="added rustrover (intellij) config" />
+    <MESSAGE value="renaming and split init logic into seperate func" />
+    <option name="LAST_COMMIT_MESSAGE" value="renaming and split init logic into seperate func" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

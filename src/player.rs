@@ -30,90 +30,91 @@ impl Player {
     }
 
     pub fn handle_input(&mut self, rl: &raylib::RaylibHandle) {
+        let transform = &mut self.transform;
         /* ---------------------------------- input --------------------------------- */
         if self.grounded
             && ((rl.is_key_down(KEY_W) || rl.is_key_down(KEY_SPACE))
-                && (self.transform.vel.y >= -self.transform.max_vel.y))
+            && (transform.vel.y >= -transform.max_vel.y))
         {
-            self.transform.vel.y -= 12.0;
+            transform.vel.y -= 12.0;
         }
 
-        if rl.is_key_down(KEY_A) && (self.transform.vel.x >= -self.transform.max_vel.x) {
-            self.transform.vel.x -= self.transform.mvmt_spd.x;
+        if rl.is_key_down(KEY_A) && (transform.vel.x >= -transform.max_vel.x) {
+            transform.vel.x -= transform.movement_speed.x;
         }
 
         if !self.grounded
-            && (rl.is_key_down(KEY_S) && (self.transform.vel.y <= self.transform.max_vel.y))
+            && (rl.is_key_down(KEY_S) && (transform.vel.y <= transform.max_vel.y))
         {
-            self.transform.vel.y += self.transform.mvmt_spd.y;
+            transform.vel.y += transform.movement_speed.y;
         }
 
-        if rl.is_key_down(KEY_D) && (self.transform.vel.x <= self.transform.max_vel.x) {
-            self.transform.vel.x += self.transform.mvmt_spd.x;
+        if rl.is_key_down(KEY_D) && (transform.vel.x <= transform.max_vel.x) {
+            transform.vel.x += transform.movement_speed.x;
         }
 
         /* -------------------------------- friction -------------------------------- */
-        if self.transform.vel.x < 0.0 {
-            self.transform.vel.x += 0.5;
+        if transform.vel.x < 0.0 {
+            transform.vel.x += 0.5;
         }
-        if self.transform.vel.x > 0.0 {
-            self.transform.vel.x -= 0.5;
+        if transform.vel.x > 0.0 {
+            transform.vel.x -= 0.5;
         }
 
-        if self.transform.vel.y < 0.0 {
-            self.transform.vel.y += 0.5;
+        if transform.vel.y < 0.0 {
+            transform.vel.y += 0.5;
         }
-        if self.transform.vel.y > 0.0 {
-            self.transform.vel.y -= 0.5;
+        if transform.vel.y > 0.0 {
+            transform.vel.y -= 0.5;
         }
 
         /* ----------------------------- updating player ---------------------------- */
         //gravity
         if !self.grounded {
-            self.transform.vel.y += 0.75;
-        } else if self.transform.vel.y >= 0.0 {
-            self.transform.vel.y = 0.0;
+            transform.vel.y += 0.75;
+        } else if transform.vel.y >= 0.0 {
+            transform.vel.y = 0.0;
         }
 
-        self.transform.x += self.transform.vel.x as i32;
-        self.transform.y += self.transform.vel.y as i32;
+        transform.x += transform.vel.x as i32;
+        transform.y += transform.vel.y as i32;
 
-        if self.transform.x < 0 {
-            self.transform.x = 0;
+        if transform.x < 0 {
+            transform.x = 0;
         }
-        if self.transform.y < 0 {
-            self.transform.y = 0;
+        if transform.y < 0 {
+            transform.y = 0;
         }
-        if self.transform.x >= 310 {
-            self.transform.x = 310;
+        if transform.x >= 310 {
+            transform.x = 310;
         }
-        if self.transform.y >= 170 {
-            self.transform.y = 170;
+        if transform.y >= 170 {
+            transform.y = 170;
         }
 
-        self.transform.hitbox.rect.x = self.transform.x as f32 + self.transform.hitbox.offset.x;
-        self.transform.hitbox.rect.y = self.transform.y as f32 + self.transform.hitbox.offset.y;
+        transform.hitbox.rect.x = transform.x as f32 + transform.hitbox.offset.x;
+        transform.hitbox.rect.y = transform.y as f32 + transform.hitbox.offset.y;
     }
 
     pub fn check_grounded(&mut self, map: &Map) {
         let sh = self.transform.hitbox.rect;
-        let tile_id = check_tile_at(
+        self.grounded = match check_tile_at(
             map,
             ((sh.x + sh.width / 2.0) / 16.0) as i32,
             ((sh.y + sh.height) / 16.0) as i32,
-        );
-        
-        //15 is blank
-        self.grounded = tile_id != 15;
+        ) {
+            None => { false }
+            Some(_tile_id) => { true }
+        };
     }
 
     pub fn draw(
         &self,
-        t: &mut raylib::prelude::RaylibTextureMode<'_, raylib::prelude::RaylibDrawHandle<'_>>,
+        draw_handle: &mut raylib::prelude::RaylibTextureMode<'_, raylib::prelude::RaylibDrawHandle<'_>>,
         player_tex: &raylib::texture::Texture2D,
         is_debug: bool,
     ) {
-        t.draw_texture_ex(
+        draw_handle.draw_texture_ex(
             player_tex,
             raylib::prelude::Vector2::new(self.transform.x as f32, self.transform.y as f32),
             0.0,
@@ -121,7 +122,7 @@ impl Player {
             Color::WHITE,
         );
         if is_debug {
-            t.draw_rectangle_lines_ex(self.transform.hitbox.rect, 1, Color::RED);
+            draw_handle.draw_rectangle_lines_ex(self.transform.hitbox.rect, 1, Color::RED);
         }
     }
 }
