@@ -18,7 +18,7 @@ pub struct Transform {
     pub y: i32,
     pub vel: Vector2,
     pub max_vel: Vector2,
-    pub mvmt_spd: Vector2,
+    pub movement_speed: Vector2,
     pub hitbox: Hitbox,
 }
 
@@ -28,7 +28,7 @@ impl Transform {
         y: i32,
         vel: Vector2,
         max_vel: Vector2,
-        mvmt_spd: Vector2,
+        movement_speed: Vector2,
         hitbox: Hitbox,
     ) -> Self {
         Self {
@@ -36,8 +36,9 @@ impl Transform {
             y,
             vel,
             max_vel,
-            mvmt_spd,
+            movement_speed,
             hitbox,
         }
     }
 }
+

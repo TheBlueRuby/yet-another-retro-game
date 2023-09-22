@@ -4,20 +4,20 @@ use raylib::{
 };
 use tiled::{Loader, Map, Tileset};
 
-pub fn load_level(map: &str) -> Map {
+pub fn load_level(map_path: &str) -> Map {
     let mut loader = Loader::new();
-    loader.load_tmx_map(map).unwrap()
+    loader.load_tmx_map(map_path).unwrap()
 }
 
-pub fn load_tileset(tileset: &str) -> Tileset {
+pub fn load_tileset(tileset_path: &str) -> Tileset {
     let mut loader = Loader::new();
-    loader.load_tsx_tileset(tileset).unwrap()
+    loader.load_tsx_tileset(tileset_path).unwrap()
 }
 
 pub fn draw_tiles(
-    t: &mut raylib::prelude::RaylibTextureMode<'_, raylib::prelude::RaylibDrawHandle<'_>>,
+    draw_handle: &mut raylib::prelude::RaylibTextureMode<'_, raylib::prelude::RaylibDrawHandle<'_>>,
     map: &Map,
-    tileset: &Texture2D,
+    tileset_texture: &Texture2D,
 ) {
     let tile_layer = map.get_layer(0).unwrap().as_tile_layer().unwrap();
     let map_tileset = &map.tilesets()[0];
@@ -49,8 +49,8 @@ pub fn draw_tiles(
                 map.tile_height as f32,
             );
 
-            t.draw_texture_pro(
-                tileset,
+            draw_handle.draw_texture_pro(
+                tileset_texture,
                 tile_source,
                 tile_dest,
                 Vector2::new(0.0, 0.0),

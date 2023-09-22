@@ -1,62 +1,36 @@
 use level::{load_level, load_tileset};
 use raylib::prelude::*;
+use tiled::Map;
 
 mod player;
 mod types;
 mod level;
+
 use player::*;
-use types::Hitbox;
+use types::*;
 
 fn main() {
     /* -------------------------------------------------------------------------- */
     /*                                    init                                    */
     /* -------------------------------------------------------------------------- */
-    let debug = cfg!(debug_assertions);
+    let is_debug = cfg!(debug_assertions);
 
     /* ------------------------------- raylib init ------------------------------ */
-    let screen_width = 1280;
-    let screen_height = 720;
 
-    let virt_screen_width = 320;
-    let virt_screen_height = 180;
-
-    let virt_ratio: f32 = (screen_width as f32) / (virt_screen_width as f32);
-
-    let (mut rl, thread) = raylib::init()
-        .size(screen_width, screen_height)
-        .title("Yet Another Retro Game")
-        .build();
-
-    rl.set_target_fps(60);
-
-    let mut screen_camera = Camera2D {
-        target: Vector2::new(screen_width as f32 / 2.0, screen_height as f32 / 2.0),
-        offset: Vector2::new(0.0, 0.0),
-        rotation: 0.0,
-        zoom: 1.0,
-    };
-
-    let mut world_camera = Camera2D {
-        target: Vector2::new(screen_width as f32 / 2.0, screen_height as f32 / 2.0),
-        offset: Vector2::new(0.0, 0.0),
-        rotation: 0.0,
-        zoom: 1.0,
-    };
-
-    let mut virt_screen: RenderTexture2D = rl
-        .load_render_texture(&thread, virt_screen_width, virt_screen_height)
-        .unwrap();
-    let source_rec = Rectangle::new(
-        0.0,
-        0.0,
-        virt_screen.texture.width as f32,
-        -virt_screen.texture.height as f32,
-    );
-    let dest_rec = Rectangle::new(
-        -virt_ratio,
-        -virt_ratio,
-        screen_width as f32 + (virt_ratio * 2.0),
-        screen_height as f32 + (virt_ratio * 2.0),
+    let (
+            virt_ratio,
+            (mut raylib_handle, raylib_thread),
+            mut screen_camera,
+            mut world_camera,
+            mut virtual_screen_texture,
+            virtual_screen_rec,
+            window_rec
+    ) = init(
+        1280,
+        720,
+        "Yet Another Retro Game",
+        320,
+        180
     );
 
     /* -------------------------------- game init ------------------------------- */
@@ -65,23 +39,30 @@ fn main() {
         16,
         Vector2::new(3.0, 5.0),
         Vector2::new(1.0, 1.0),
-        Hitbox::new(Vector2::new(2.0, 0.0), Rectangle::new(0.0, 0.0, 13.0, 16.0)),
+        Hitbox::new(
+            Vector2::new(2.0, 0.0),
+            Rectangle::new(0.0, 0.0, 13.0, 16.0),
+        ),
         Image::load_image("resources/images/player.png").unwrap(),
     );
-    let player_tex = rl
-        .load_texture_from_image(&thread, &player.texture)
+
+    let player_tex = raylib_handle
+        .load_texture_from_image(&raylib_thread, &player.texture)
         .unwrap();
 
     let level = load_level("resources/levels/test.tmx");
     let tileset = load_tileset("resources/levels/monochrome.tsx");
-    let tileset_tex = rl.load_texture(&thread, tileset.image.clone().unwrap().source.to_str().unwrap()).unwrap();
+    let tileset_tex = raylib_handle.load_texture(
+        &raylib_thread,
+        tileset.image.clone().unwrap().source.to_str().unwrap(),
+    ).unwrap();
 
     /* -------------------------------------------------------------------------- */
     /*                                  main loop                                 */
     /* -------------------------------------------------------------------------- */
-    while !rl.window_should_close() {
+    while !raylib_handle.window_should_close() {
         /* --------------------------------- update --------------------------------- */
-        player.handle_input(&rl);
+        player.handle_input(&raylib_handle);
 
         /* ------------------------------ camera stuff ------------------------------ */
         world_camera.target.x = screen_camera.target.x;
@@ -96,34 +77,90 @@ fn main() {
         player.check_grounded(&level);
 
         /* --------------------------------- drawing -------------------------------- */
-        let mut draw_handle = rl.begin_drawing(&thread);
+        let mut draw_handle = raylib_handle.begin_drawing(&raylib_thread);
 
-        let mut texture_mode = draw_handle.begin_texture_mode(&thread, &mut virt_screen);
-        let mut w_mode_2d = texture_mode.begin_mode2D(world_camera);
-        w_mode_2d.clear_background(Color::WHITE);
-        drop(w_mode_2d);
+        {// drawing to render texture
+            let mut virtual_screen = draw_handle.begin_texture_mode(&raylib_thread, &mut virtual_screen_texture);
 
-        level::draw_tiles( &mut texture_mode, &level, &tileset_tex);
-        player.draw(&mut texture_mode, &player_tex, debug);
+            draw(&mut virtual_screen, &player, &player_tex, &level, &tileset_tex, is_debug);
+        }
 
-        drop(texture_mode);
-
+        // rendering texture to screen
         draw_handle.clear_background(Color::MAGENTA);
-        let mut s_mode_2d = draw_handle.begin_mode2D(screen_camera);
-        s_mode_2d.draw_texture_pro(
-            &virt_screen,
-            source_rec,
-            dest_rec,
+
+        let mut screen = draw_handle.begin_mode2D(screen_camera);
+        screen.draw_texture_pro(
+            &virtual_screen_texture,
+            virtual_screen_rec,
+            window_rec,
             Vector2 { x: 0.0, y: 0.0 },
             0.0,
             Color::WHITE,
         );
-        drop(s_mode_2d);
     }
 
     /* -------------------------------------------------------------------------- */
     /*                                   cleanup                                  */
     /* -------------------------------------------------------------------------- */
-    drop(virt_screen);
+    drop(virtual_screen_texture);
     drop(player_tex);
+}
+
+fn init(window_width: i32, window_height: i32, window_title: &str, virtual_screen_width: u32, virtual_screen_height: u32) -> (f32, (RaylibHandle, RaylibThread), Camera2D, Camera2D, RenderTexture2D, Rectangle, Rectangle) {
+    let virt_ratio: f32 = (window_width as f32) / (virtual_screen_width as f32);
+
+    let (mut raylib_handle, raylib_thread) = raylib::init()
+        .size(window_width, window_height)
+        .title(window_title)
+        .build();
+
+    raylib_handle.set_target_fps(60);
+
+    let mut screen_camera = Camera2D {
+        target: Vector2::new(window_width as f32 / 2.0, window_height as f32 / 2.0),
+        offset: Vector2::new(0.0, 0.0),
+        rotation: 0.0,
+        zoom: 1.0,
+    };
+
+    let mut world_camera = Camera2D {
+        target: Vector2::new(window_width as f32 / 2.0, window_height as f32 / 2.0),
+        offset: Vector2::new(0.0, 0.0),
+        rotation: 0.0,
+        zoom: 1.0,
+    };
+
+    let mut virtual_screen_texture: RenderTexture2D = raylib_handle
+        .load_render_texture(&raylib_thread, virtual_screen_width, virtual_screen_height)
+        .unwrap();
+
+    let virtual_screen_rec = Rectangle::new(
+        0.0,
+        0.0,
+        virtual_screen_texture.texture.width as f32,
+        -virtual_screen_texture.texture.height as f32,
+    );
+    let window_rec = Rectangle::new(
+        -virt_ratio,
+        -virt_ratio,
+        window_width as f32 + (virt_ratio * 2.0),
+        window_height as f32 + (virt_ratio * 2.0),
+    );
+
+    let init_tuple = (virt_ratio, (raylib_handle, raylib_thread), screen_camera, world_camera, virtual_screen_texture, virtual_screen_rec, window_rec);
+    return init_tuple;
+}
+
+fn draw(
+    draw_handle: &mut RaylibTextureMode<RaylibDrawHandle>,
+    player: &Player,
+    player_tex: &Texture2D,
+    level: &Map,
+    tileset_tex: &Texture2D,
+    is_debug: bool,
+) {
+    draw_handle.clear_background(Color::WHITE);
+
+    level::draw_tiles(draw_handle, level, tileset_tex);
+    player.draw(draw_handle, player_tex, is_debug);
 }
