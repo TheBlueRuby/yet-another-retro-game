@@ -116,21 +116,21 @@ fn init(window_width: i32, window_height: i32, window_title: &str, virtual_scree
 
     raylib_handle.set_target_fps(60);
 
-    let mut screen_camera = Camera2D {
+    let screen_camera = Camera2D {
         target: Vector2::new(window_width as f32 / 2.0, window_height as f32 / 2.0),
         offset: Vector2::new(0.0, 0.0),
         rotation: 0.0,
         zoom: 1.0,
     };
 
-    let mut world_camera = Camera2D {
+    let world_camera = Camera2D {
         target: Vector2::new(window_width as f32 / 2.0, window_height as f32 / 2.0),
         offset: Vector2::new(0.0, 0.0),
         rotation: 0.0,
         zoom: 1.0,
     };
 
-    let mut virtual_screen_texture: RenderTexture2D = raylib_handle
+    let virtual_screen_texture: RenderTexture2D = raylib_handle
         .load_render_texture(&raylib_thread, virtual_screen_width, virtual_screen_height)
         .unwrap();
 
@@ -147,8 +147,8 @@ fn init(window_width: i32, window_height: i32, window_title: &str, virtual_scree
         window_height as f32 + (virt_ratio * 2.0),
     );
 
-    let init_tuple = (virt_ratio, (raylib_handle, raylib_thread), screen_camera, world_camera, virtual_screen_texture, virtual_screen_rec, window_rec);
-    return init_tuple;
+    
+    (virt_ratio, (raylib_handle, raylib_thread), screen_camera, world_camera, virtual_screen_texture, virtual_screen_rec, window_rec)
 }
 
 fn draw(
