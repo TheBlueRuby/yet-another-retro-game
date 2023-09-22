@@ -7,12 +7,13 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="084a83da-8b72-492c-98f3-ded1164da3df" name="Changes" comment="">
+    <list default="true" id="084a83da-8b72-492c-98f3-ded1164da3df" name="Changes" comment="renaming and split init logic into seperate func">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/levels/monochrome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/levels/monochrome.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/levels/test.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/levels/test.tmx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/level.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/level.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/player.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/player.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,20 +70,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "formatting",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/nyehom/Programming/rust/yarg/Cargo.toml",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "settings.editor.selected.configurable": "settings.typescriptcompiler",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\RustRover 232.9921.62\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;formatting&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nyehom/Programming/rust/yarg/Cargo.toml&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\RustRover 232.9921.62\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;
   }
-}]]></component>
+}</component>
   <component name="RsExternalLinterProjectSettings">
     <option name="tool" value="Clippy" />
   </component>
@@ -179,6 +180,7 @@
       <workItem from="1695364828136" duration="107000" />
       <workItem from="1695364949380" duration="232000" />
       <workItem from="1695365193790" duration="169000" />
+      <workItem from="1695371694586" duration="425000" />
     </task>
     <task id="LOCAL-00001" summary="renamed &quot;blackandwhite.tsx&quot; to &quot;monochrome.tsx&quot;">
       <option name="closed" value="true" />
@@ -196,7 +198,23 @@
       <option name="project" value="LOCAL" />
       <updated>1695365059679</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="renaming and split init logic into seperate func">
+      <option name="closed" value="true" />
+      <created>1695370056274</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1695370056274</updated>
+    </task>
+    <task id="LOCAL-00004" summary="renaming and split init logic into seperate func">
+      <option name="closed" value="true" />
+      <created>1695370091284</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695370091284</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,7 +234,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="renamed &quot;blackandwhite.tsx&quot; to &quot;monochrome.tsx&quot;" />
     <MESSAGE value="added rustrover (intellij) config" />
-    <option name="LAST_COMMIT_MESSAGE" value="added rustrover (intellij) config" />
+    <MESSAGE value="renaming and split init logic into seperate func" />
+    <option name="LAST_COMMIT_MESSAGE" value="renaming and split init logic into seperate func" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

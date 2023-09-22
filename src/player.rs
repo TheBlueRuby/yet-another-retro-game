@@ -98,14 +98,14 @@ impl Player {
 
     pub fn check_grounded(&mut self, map: &Map) {
         let sh = self.transform.hitbox.rect;
-        let tile_id = check_tile_at(
+        self.grounded = match check_tile_at(
             map,
             ((sh.x + sh.width / 2.0) / 16.0) as i32,
             ((sh.y + sh.height) / 16.0) as i32,
-        );
-
-        //15 is blank
-        self.grounded = tile_id != 15;
+        ) {
+            None => { false }
+            Some(_tile_id) => { true }
+        };
     }
 
     pub fn draw(
