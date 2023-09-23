@@ -16,9 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install Cmake
-      run: sudo apt update && sudo apt install -y cmake
-    - name: Build
+    - name: Install Dependencies
+      run: sudo apt update && sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev build-essential
+    - name: Build for Linux
       run: cargo build --verbose --release
     - name: Run tests
       run: cargo test --verbose
