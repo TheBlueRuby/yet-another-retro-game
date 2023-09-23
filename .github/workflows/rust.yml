@@ -28,7 +28,7 @@ jobs:
       run: cargo test --verbose
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@3
+      uses: actions/upload-artifact@v3
       with:
         name: yarg-linux
         path: target/release/yarg
@@ -65,7 +65,7 @@ jobs:
           args: --target x86_64-pc-windows-gnu --verbose
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@3
+        uses: actions/upload-artifact@v3
         with:
           name: yarg-windows.exe
           path: target/release/yarg.exe
