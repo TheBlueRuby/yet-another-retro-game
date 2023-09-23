@@ -65,8 +65,8 @@ fn main() {
         /* --------------------------------- update --------------------------------- */
         move_cameras(&mut world_camera, &mut screen_camera, virt_ratio);
 
+        player.check_collisions(&level);
         player.handle_input(&raylib_handle);
-        player.check_grounded(&level);
 
         /* --------------------------------- drawing -------------------------------- */
         let mut draw_handle = raylib_handle.begin_drawing(&raylib_thread);
