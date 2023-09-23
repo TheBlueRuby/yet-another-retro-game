@@ -32,13 +32,12 @@ jobs:
         mkdir artifacts
         cp -rv resources/ artifacts/
         cp -v target/release/yarg artifacts/yarg-linux
-        tar -cvzf yarg-linux.tar.gz artifacts
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: yarg-linux.tar.gz
-        path: yarg-linux.tar.gz
+        name: yarg-linux.zip
+        path: artifacts/
 
   windows_x64:
     name: Windows x86_64
@@ -76,10 +75,9 @@ jobs:
           mkdir artifacts
           cp -rv resources/ artifacts/
           cp -v target/x86_64-pc-windows-gnu/release/yarg.exe artifacts/yarg-windows.exe
-          zip -rv yarg-windows.zip artifacts
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: yarg-windows.zip
-          path: yarg-windows.zip
+          path: artifacts/
