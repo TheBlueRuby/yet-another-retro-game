@@ -4,7 +4,7 @@ use raylib::{
 };
 use tiled::{Loader, Map, Tileset};
 
-pub fn load_level(map_path: &str) -> Map {
+pub fn load_map(map_path: &str) -> Map {
     let mut loader = Loader::new();
     loader.load_tmx_map(map_path).unwrap()
 }
@@ -12,6 +12,12 @@ pub fn load_level(map_path: &str) -> Map {
 pub fn load_tileset(tileset_path: &str) -> Tileset {
     let mut loader = Loader::new();
     loader.load_tsx_tileset(tileset_path).unwrap()
+}
+
+pub fn load_level(map_path: &str, tileset_path: &str) -> (Map, Tileset) {
+    let level = load_map(map_path);
+    let tileset = load_tileset(tileset_path);
+    (level, tileset)
 }
 
 pub fn draw_tiles(
