@@ -1,4 +1,4 @@
-name: Rust
+name: Linux
 
 on:
   push:
@@ -10,24 +10,62 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  linux:
-    name: Build Linux
+  linux_x64:
+    name: Linux x86_64
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Install Dependencies
       run: sudo apt update && sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev build-essential
 
-    - name: Build for Linux
+    - name: Build
       run: cargo build --verbose --release
 
     - name: Run tests
       run: cargo test --verbose
 
-    - uses actions/upload-artifact@3
     - name: Upload Artifacts
+      uses: actions/upload-artifact@3
       with:
         name: yarg-linux
         path: target/release/yarg
+
+  windows_x64:
+    name: Windows x86_64
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev build-essential
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: x86_64-pc-windows-gnu
+          override: true
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --target x86_64-pc-windows-gnu --verbose --release
+
+      - name: Run tests
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: test
+          args: --target x86_64-pc-windows-gnu --verbose
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@3
+        with:
+          name: yarg-windows.exe
+          path: target/release/yarg.exe
