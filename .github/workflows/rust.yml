@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install Cmake
+      run: sudo apt update && sudo apt install -y cmake
     - name: Build
       run: cargo build --verbose --release
     - name: Run tests
