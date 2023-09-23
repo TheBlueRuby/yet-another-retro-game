@@ -38,7 +38,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: yarg-linux.zip
+        name: yarg-linux
         path: artifacts/
 
   windows_x64:
@@ -83,5 +83,5 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: yarg-windows.zip
+          name: yarg-windows
           path: artifacts/
