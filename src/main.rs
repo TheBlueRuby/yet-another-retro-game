@@ -1,8 +1,6 @@
 #![allow(clippy::too_many_arguments)]
 
-use level::{load_map, load_tileset};
 use raylib::prelude::*;
-use tiled::Map;
 
 mod player;
 mod types;
