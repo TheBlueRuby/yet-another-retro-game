@@ -1,4 +1,4 @@
-use raylib::prelude::{Color, KeyboardKey::*, RaylibDraw, Vector2};
+use raylib::prelude::{Color, KeyboardKey::*, RaylibDraw, Texture2D, Vector2};
 use tiled::Map;
 
 use crate::{
@@ -17,13 +17,13 @@ impl Player {
     pub fn new(
         x: i32,
         y: i32,
-        mv: Vector2,
-        sp: Vector2,
+        max_vel: Vector2,
+        movement_speed: Vector2,
         hitbox: Hitbox,
         texture: raylib::texture::Image,
     ) -> Self {
         Self {
-            transform: Transform::new(x, y, Vector2::new(0.0, 0.0), mv, sp, hitbox),
+            transform: Transform::new(x, y, Vector2::new(0.0, 0.0), max_vel, movement_speed, hitbox),
             texture,
             grounded: false,
         }
@@ -33,10 +33,10 @@ impl Player {
         let transform = &mut self.transform;
         /* ---------------------------------- input --------------------------------- */
         if self.grounded
-            && ((rl.is_key_down(KEY_W) || rl.is_key_down(KEY_SPACE))
+            && ((rl.is_key_pressed(KEY_W) || rl.is_key_pressed(KEY_SPACE))
             && (transform.vel.y >= -transform.max_vel.y))
         {
-            transform.vel.y -= 12.0;
+            transform.vel.y -= transform.movement_speed.y;
         }
 
         if rl.is_key_down(KEY_A) && (transform.vel.x >= -transform.max_vel.x) {
@@ -111,7 +111,7 @@ impl Player {
     pub fn draw(
         &self,
         draw_handle: &mut raylib::prelude::RaylibTextureMode<'_, raylib::prelude::RaylibDrawHandle<'_>>,
-        player_tex: &raylib::texture::Texture2D,
+        player_tex: &Texture2D,
         is_debug: bool,
     ) {
         draw_handle.draw_texture_ex(
