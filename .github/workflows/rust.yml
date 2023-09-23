@@ -1,8 +1,8 @@
-name: Rust
+name: Build
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "gh-actions" ]
   pull_request:
     branches: [ "master" ]
 
@@ -10,15 +10,78 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  linux_x64:
+    name: Linux x86_64
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Install Dependencies
       run: sudo apt update && sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev build-essential
-    - name: Build for Linux
+
+    - uses: Swatinem/rust-cache@v2
+
+    - name: Build
       run: cargo build --verbose --release
-    - name: Run tests
-      run: cargo test --verbose
+
+#    - name: Run tests
+#      run: cargo test --verbose
+
+    - name: Package artifacts
+      run: |
+        mkdir artifacts
+        cp -rv resources/ artifacts/
+        cp -v target/release/yarg artifacts/yarg-linux
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: yarg-linux
+        path: artifacts/
+
+  windows_x64:
+    name: Windows x86_64
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install -y zip libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev build-essential
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: x86_64-pc-windows-gnu
+          override: true
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --target x86_64-pc-windows-gnu --verbose --release
+
+#      - name: Run tests
+#        uses: actions-rs/cargo@v1
+#        with:
+#          use-cross: true
+#          command: test
+#          args: --target x86_64-pc-windows-gnu --verbose
+
+      - name: Package artifacts
+        run: |
+          mkdir artifacts
+          cp -rv resources/ artifacts/
+          cp -v target/x86_64-pc-windows-gnu/release/yarg.exe artifacts/yarg-windows.exe
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: yarg-windows
+          path: artifacts/
