@@ -122,7 +122,7 @@ impl Player {
             Color::WHITE,
         );
         if is_debug {
-            draw_handle.draw_rectangle_lines_ex(self.transform.hitbox.rect, 1, Color::RED);
+            draw_handle.draw_rectangle_lines_ex(self.transform.hitbox.rect, 1.0, Color::RED);
         }
     }
 }
