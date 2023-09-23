@@ -75,7 +75,7 @@ jobs:
         run: |
           mkdir artifacts
           cp -rv resources/ artifacts/
-          cp -v target/release/yarg.exe artifacts/yarg-windows.exe
+          cp -v target/x86_64-pc-windows-gnu/release/yarg.exe artifacts/yarg-windows.exe
           zip -rv yarg-windows.zip artifacts
 
       - name: Upload Artifacts
